@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>no scary</title>
+<title>cat</title>
 <style>
     body {
         margin: 0;
@@ -17,13 +17,14 @@
 
     #cat {
         width: 300px;
-        height: 300px; /* square */
+        height: 300px; /* square image */
         object-fit: cover;
         cursor: pointer;
         transition: transform 0.2s ease;
     }
 
-   
+    #cat:hover {
+        transform: scale(1.05);
     }
 
     #surpriseVideo {
@@ -57,21 +58,23 @@ function playVideo() {
     if (triggered) return;
     triggered = true;
 
-    video.style.display = "block";
-    video.muted = false; // unmute after user interaction
-    video.volume = 1.0;
-    video.play().catch(() => console.log("Autoplay blocked"));
-
-    if (video.requestFullscreen) video.requestFullscreen();
-
-    // Optionally hide the cat image
+    // Hide cat image
     cat.style.display = "none";
+
+    // Show video and unmute
+    video.style.display = "block";
+    video.muted = false;
+    video.volume = 1.0;
+
+    // Play video and request fullscreen
+    video.play().catch(() => console.log("Video play blocked"));
+    if (video.requestFullscreen) video.requestFullscreen();
 }
 
-// Trigger video on click
+// Click triggers video
 cat.addEventListener("click", playVideo);
 
-// Auto trigger on mobile after 3 seconds
+// Mobile auto trigger after 3 seconds
 if (/Mobi|Android/i.test(navigator.userAgent)) {
     setTimeout(playVideo, 3000);
 }
