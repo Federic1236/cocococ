@@ -3,28 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>cat</title>
+<title>No Scary</title>
+
 <style>
     body {
         margin: 0;
         background: white;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
         overflow: hidden;
+        font-family: Arial, sans-serif;
     }
 
     #cat {
-        width: 300px;
-        height: 300px; /* square image */
-        object-fit: cover;
+        width: 80vw;
+        max-width: 500px;
+        height: auto;
         cursor: pointer;
-        transition: transform 0.2s ease;
-    }
-
-    #cat:hover {
-        transform: scale(1.05);
+        object-fit: contain;
     }
 
     #surpriseVideo {
@@ -32,52 +31,40 @@
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
         object-fit: cover;
         z-index: 10;
-        background: black;
     }
 </style>
 </head>
 <body>
 
-<img id="cat" src="cat.jpg" alt="Cute Cat">
+<img id="cat" src="cat.jpg" alt="cat">
 
-<video id="surpriseVideo" muted>
+<video id="surpriseVideo">
     <source src="surprise.mp4" type="video/mp4">
 </video>
 
 <script>
-const cat = document.getElementById("cat");
-const video = document.getElementById("surpriseVideo");
+    const cat = document.getElementById("cat");
+    const surpriseVideo = document.getElementById("surpriseVideo");
 
-let triggered = false;
+    let triggered = false;
 
-function playVideo() {
-    if (triggered) return;
-    triggered = true;
+    function showSurprise() {
+        if (triggered) return;
+        triggered = true;
+        surpriseVideo.style.display = "block";
+        surpriseVideo.currentTime = 0;
+        surpriseVideo.play();
+    }
 
-    // Hide cat image
-    cat.style.display = "none";
+    cat.addEventListener("click", showSurprise);
 
-    // Show video and unmute
-    video.style.display = "block";
-    video.muted = false;
-    video.volume = 1.0;
-
-    // Play video and request fullscreen
-    video.play().catch(() => console.log("Video play blocked"));
-    if (video.requestFullscreen) video.requestFullscreen();
-}
-
-// Click triggers video
-cat.addEventListener("click", playVideo);
-
-// Mobile auto trigger after 3 seconds
-if (/Mobi|Android/i.test(navigator.userAgent)) {
-    setTimeout(playVideo, 3000);
-}
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+        setTimeout(showSurprise, 3000);
+    }
 </script>
 
 </body>
