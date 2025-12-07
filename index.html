@@ -1,28 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cat Click</title>
-
 <style>
     body {
-        background: #111;
+        margin: 0;
+        background: white;
+        font-family: Arial, sans-serif;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        text-align: center;
         height: 100vh;
-        margin: 0;
-        color: white;
-        font-family: Arial, sans-serif;
+        overflow: hidden;
+        color: black;
+    }
+
+    h1 {
+        margin-top: 20px;
+        font-size: 2em;
+    }
+
+    p {
+        margin: 10px 0 20px 0;
+        font-size: 1.2em;
     }
 
     #cat {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        object-fit: cover;
+        max-width: 90%;
+        max-height: 70%;
         cursor: pointer;
+        object-fit: contain;
         transition: transform 0.2s ease;
     }
 
@@ -32,12 +43,20 @@
 
     #surpriseImg {
         display: none;
-        margin-top: 20px;
-        width: 300px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 10;
     }
 </style>
 </head>
 <body>
+
+<h1>Cat Click</h1>
+<p>Click this cat (or wait 3 seconds if you're on mobile)</p>
 
 <img id="cat" src="cat.jpg" alt="Cute Cat">
 
@@ -49,14 +68,26 @@
 
 <script>
     const cat = document.getElementById("cat");
-    const sound = document.getElementById("sound");
     const surpriseImg = document.getElementById("surpriseImg");
+    const sound = document.getElementById("sound");
 
-    cat.addEventListener("click", () => {
+    let triggered = false;
+
+    function showSurprise() {
+        if (triggered) return;
+        triggered = true;
         sound.currentTime = 0;
         sound.play();
         surpriseImg.style.display = "block";
-    });
+    }
+
+    
+    cat.addEventListener("click", showSurprise);
+
+    // On mobile, wait 3 seconds automatically
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+        setTimeout(showSurprise, 3000);
+    }
 </script>
 
 </body>
