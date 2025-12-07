@@ -3,45 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cat Click</title>
+<title>no scary</title>
 <style>
     body {
         margin: 0;
         background: white;
-        font-family: Arial, sans-serif;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
-        text-align: center;
         height: 100vh;
         overflow: hidden;
-        color: black;
-    }
-
-    h1 {
-        margin-top: 20px;
-        font-size: 2em;
-    }
-
-    p {
-        margin: 10px 0 20px 0;
-        font-size: 1.2em;
     }
 
     #cat {
-        max-width: 90%;
-        max-height: 70%;
+        width: 300px;
+        height: 300px; /* square */
+        object-fit: cover;
         cursor: pointer;
-        object-fit: contain;
         transition: transform 0.2s ease;
     }
 
-    #cat:hover {
-        transform: scale(1.05);
+   
     }
 
-    #surpriseImg {
+    #surpriseVideo {
         display: none;
         position: fixed;
         top: 0;
@@ -50,44 +35,46 @@
         height: 100%;
         object-fit: cover;
         z-index: 10;
+        background: black;
     }
 </style>
 </head>
 <body>
 
-<h1>Cat Click</h1>
-<p>Click this cat (or wait 3 seconds if you're on mobile)</p>
-
 <img id="cat" src="cat.jpg" alt="Cute Cat">
 
-<img id="surpriseImg" src="surprise.jpg" alt="Surprise">
-
-<audio id="sound">
-    <source src="sound.mp3" type="audio/mpeg">
-</audio>
+<video id="surpriseVideo" muted>
+    <source src="surprise.mp4" type="video/mp4">
+</video>
 
 <script>
-    const cat = document.getElementById("cat");
-    const surpriseImg = document.getElementById("surpriseImg");
-    const sound = document.getElementById("sound");
+const cat = document.getElementById("cat");
+const video = document.getElementById("surpriseVideo");
 
-    let triggered = false;
+let triggered = false;
 
-    function showSurprise() {
-        if (triggered) return;
-        triggered = true;
-        sound.currentTime = 0;
-        sound.play();
-        surpriseImg.style.display = "block";
-    }
+function playVideo() {
+    if (triggered) return;
+    triggered = true;
 
-    
-    cat.addEventListener("click", showSurprise);
+    video.style.display = "block";
+    video.muted = false; // unmute after user interaction
+    video.volume = 1.0;
+    video.play().catch(() => console.log("Autoplay blocked"));
 
-    // On mobile, wait 3 seconds automatically
-    if (/Mobi|Android/i.test(navigator.userAgent)) {
-        setTimeout(showSurprise, 3000);
-    }
+    if (video.requestFullscreen) video.requestFullscreen();
+
+    // Optionally hide the cat image
+    cat.style.display = "none";
+}
+
+// Trigger video on click
+cat.addEventListener("click", playVideo);
+
+// Auto trigger on mobile after 3 seconds
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+    setTimeout(playVideo, 3000);
+}
 </script>
 
 </body>
