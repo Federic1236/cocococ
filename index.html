@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cat Click</title>
+
+<style>
+    body {
+        background: #111;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    #cat {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    #cat:hover {
+        transform: scale(1.05);
+    }
+
+    #surpriseImg {
+        display: none;
+        margin-top: 20px;
+        width: 300px;
+    }
+</style>
+</head>
+<body>
+
+<img id="cat" src="cat.jpg" alt="Cute Cat">
+
+<img id="surpriseImg" src="surprise.jpg" alt="Surprise">
+
+<audio id="sound">
+    <source src="sound.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    const cat = document.getElementById("cat");
+    const sound = document.getElementById("sound");
+    const surpriseImg = document.getElementById("surpriseImg");
+
+    cat.addEventListener("click", () => {
+        sound.currentTime = 0;
+        sound.play();
+        surpriseImg.style.display = "block";
+    });
+</script>
+
+</body>
+</html>
